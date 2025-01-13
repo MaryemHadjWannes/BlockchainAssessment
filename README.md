@@ -21,10 +21,27 @@
   const odyssey = require("./odysseyjs");
   ```
 
+  Create an instance of OdysseyJS connected to Odyssey Chain Testnet.
+  ```javascript
+  // Initialize Odyssey connection
+  const ip = 'testnode.dioneprotocol.com';
+  const portOdyssey = 443;
+  const protocol = 'https';
+  const networkID = 131313;
+  const odyssey = new Odyssey(ip, portOdyssey, protocol, networkID);
+  const dchain = odyssey.DChain() ; // Using D-Chain
+  ```
+
+  API Base URL : D-Chain
+  ```javascript
+  const API_BASE_URL = 'https://api.odysseyscan.com/api/v2/'; // API base URL - Infinet (D-Chain)
+  ```
+
 - API GET /latest-block
   ```javascript
   // Endpoint to get the latest block data
   app.get('/latest-block', async (req, res) => {
+  
   
     try {
       const response = await axios.get(`${API_BASE_URL}/blocks`, {
@@ -47,6 +64,8 @@
   
   });
   ```
+  ![image](https://github.com/user-attachments/assets/03f1e0b7-1431-4fb6-8463-1ec60edbfb8b)
+
 
 - API POST /send-transaction
   ```bash
