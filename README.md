@@ -135,7 +135,7 @@
   Transaction successful with hash: 0x7aad694e5c1375842b1ebaea5723b2eac1cf4e14f89791bd3a59e76f50c7241d
   `
 
-  The transaction has been successfully recorded on OdysseyScan.
+  The transaction has been successfully recorded on OdysseyScan https://testnet.odysseyscan.com/tx/0x7aad694e5c1375842b1ebaea5723b2eac1cf4e14f89791bd3a59e76f50c7241d .
   ![image](https://github.com/user-attachments/assets/ae6e43f5-4e79-4e45-aa3c-2d43f8983747)
 
   
