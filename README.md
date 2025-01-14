@@ -4,11 +4,11 @@
 ### 1. Infinets Concept
 **a. What is an “infinet”? How does it relate to network topologies and scalability in decentralized systems like Odyssey chain?**
 
-An infinet is a modular and customizable extension of the Odyssey chain's core architecture that enables infinite scalability by allowing the creation of independent networks tailored to specific business requirements. Infinets support a heterogeneous network topology, where different blockchains are designed for specialized functions, enhancing scalability and reducing congestion.
+An infinet is basically a customizable extension network that branches off from the main Odyssey chain. Think of it like having specialized departments in a company - each infinet can be optimized for specific business needs while still being connected to the main system. This modular approach means you can scale infinitely by just adding more infinets when needed
 
 **b. How do decentralized networks (like Odyssey chain) handle the problem of infinite scalability, especially when scaling to thousands or millions of validators?**
 
-Odyssey chain achieves scalability by employing a horizontal scaling approach. It uses infinets to create separate, self-contained networks that operate independently. Validators are organized at the parent network level and can participate across multiple infinets, which reduces load on individual chains. The DPoS consensus mechanism ensures that validator participation is inclusive and scalable to high numbers.
+The key is horizontal scaling through these infinets. Instead of trying to make one chain handle everything, Odyssey distributes the load across multiple specialized networks. Validators can work across different infinets, and the DPoS consensus keeps things running smoothly even with thousands of validators. It's like having multiple assembly lines in a factory rather than trying to make everything on one line.
 
 ### 2. Odyssey Chain Consensus & Architecture
 **a. How does Odyssey chain’s consensus protocol solve the issue of high throughput and low latency?**
