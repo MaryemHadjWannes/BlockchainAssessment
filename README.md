@@ -232,40 +232,107 @@
 
 
 - A backend service that uses the Odyssey chain JavaScript SDK to interact with two different Odyssey chain subnets.
-- 
-  In this case we can use the export/import functions !! 
-  ```javascript
-  // Endpoint: Transfer DIONE between subnets
-  app.post('/transfer', async (req, res) => {
-    const { fromSubnet, toSubnet, amount } = req.body;
   
-    try {
-      const senderAddresses = achain.keyChain().getAddressStrings();
-      const recipientAddresses = dchain.keyChain().getAddressStrings();
-      const dioneAssetID = achain.getDIONEAssetID();
-  
-      const alphaUTXOResponse = await achain.getUTXOs(senderAddresses);
-      const utxoSet = alphaUTXOResponse.utxos;
-      const exportTx = await achain.buildExportTx(
-        utxoSet,
-        new BN(amount),
-        toSubnet === 'D' ? dchain.getBlockchainID() : achain.getBlockchainID(),
-        recipientAddresses,
-        senderAddresses,
-        senderAddresses
-      );
-  
-      const signedTx = exportTx.sign(aKeychain);
-      const txId = await achain.issueTx(signedTx);
-      res.json({ message: `Transaction successful! TXID: ${txId}` });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-  ```
+In this case we can use the export/import functions !! 
+ ```javascript
+// Endpoint: Transfer DIONE between subnets
+app.post('/transfer', async (req, res) => {
+  const { fromSubnet, toSubnet, amount } = req.body;
+
+  try {
+    const senderAddresses = achain.keyChain().getAddressStrings();
+    const recipientAddresses = dchain.keyChain().getAddressStrings();
+    const dioneAssetID = achain.getDIONEAssetID();
+
+    const alphaUTXOResponse = await achain.getUTXOs(senderAddresses);
+    const utxoSet = alphaUTXOResponse.utxos;
+    const exportTx = await achain.buildExportTx(
+      utxoSet,
+      new BN(amount),
+      toSubnet === 'D' ? dchain.getBlockchainID() : achain.getBlockchainID(),
+      recipientAddresses,
+      senderAddresses,
+      senderAddresses
+    );
+
+    const signedTx = exportTx.sign(aKeychain);
+    const txId = await achain.issueTx(signedTx);
+    res.json({ message: `Transaction successful! TXID: ${txId}` });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+ ```
 
 
 
 ### Task 3: Backend API for Odyssey chain Asset Transfer
+  ```javascript
+  // API route to transfer DIONE
+  app.post("/transfer-dione", async (req, res) => {
+    const { senderPrivateKey, senderAddress, recipientAddress, amountInDione } = req.body;
+  
+    if (!senderPrivateKey || !senderAddress || !recipientAddress || !amountInDione) {
+      return res.status(400).json({
+        error: "Missing required fields: senderPrivateKey, senderAddress, recipientAddress, or amountInDione.",
+      });
+    }
+  
+    try {
+      // Convert amount to Wei (smallest unit of DIONE)
+      const amount = web3.utils.toWei(amountInDione.toString(), "ether");
+  
+      // Validate sender's balance
+      const balanceWei = await web3.eth.getBalance(senderAddress);
+      const balance = web3.utils.fromWei(balanceWei, "ether");
+  
+      if (parseFloat(balance) < parseFloat(amountInDione)) {
+        return res.status(400).json({
+          error: "Insufficient balance.",
+          senderBalance: balance,
+        });
+      }
+  
+      // Get current nonce for the sender's address
+      const nonce = await web3.eth.getTransactionCount(senderAddress, "pending");
+  
+      // Adjust gas price
+      const currentGasPrice = await web3.eth.getGasPrice();
+      const adjustedGasPrice = BigInt(currentGasPrice) + BigInt(50000000000); // Add 50 Gwei for faster processing
+  
+      // Construct transaction object
+      const txObject = {
+        from: senderAddress,
+        to: recipientAddress,
+        value: amount,
+        gas: 21000, // Standard gas limit for simple transfers
+        gasPrice: adjustedGasPrice.toString(),
+        nonce: nonce,
+        chainId: 131313,
+      };
+  
+      // Sign the transaction
+      const signedTx = await web3.eth.accounts.signTransaction(txObject, senderPrivateKey);
+  
+      // Send the signed transaction
+      const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+  
+      return res.status(200).json({
+        message: "Transaction successful!",
+        transactionHash: receipt.transactionHash,
+      });
+    } catch (error) {
+      console.error("Error during transaction:", error);
+      return res.status(500).json({
+        error: "Transaction failed.",
+        details: error.message,
+      });
+    }
+  });
+
+  ```
+  ![image](https://github.com/user-attachments/assets/c977551f-c102-411c-88e6-63a7e82de155)
+  ![image](https://github.com/user-attachments/assets/d4788c17-b673-4f7b-bce2-8c35b8fb5155)
+
 
 
