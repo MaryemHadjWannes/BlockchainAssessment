@@ -2,16 +2,16 @@
 
 ## Part 1: Understanding Infinets and Blockchain
 ### 1. Infinets Concept
-a. What is an “infinet”? How does it relate to network topologies and scalability in decentralized systems like Odyssey chain?
+**a. What is an “infinet”? How does it relate to network topologies and scalability in decentralized systems like Odyssey chain?**
 
 An infinet is a modular and customizable extension of the Odyssey chain's core architecture that enables infinite scalability by allowing the creation of independent networks tailored to specific business requirements. Infinets support a heterogeneous network topology, where different blockchains are designed for specialized functions, enhancing scalability and reducing congestion.
 
-b. How do decentralized networks (like Odyssey chain) handle the problem of infinite scalability, especially when scaling to thousands or millions of validators?
+**b. How do decentralized networks (like Odyssey chain) handle the problem of infinite scalability, especially when scaling to thousands or millions of validators?**
 
 Odyssey chain achieves scalability by employing a horizontal scaling approach. It uses infinets to create separate, self-contained networks that operate independently. Validators are organized at the parent network level and can participate across multiple infinets, which reduces load on individual chains. The DPoS consensus mechanism ensures that validator participation is inclusive and scalable to high numbers.
 
 ### 2. Odyssey Chain Consensus & Architecture
-a. How does Odyssey chain’s consensus protocol solve the issue of high throughput and low latency?
+**a. How does Odyssey chain’s consensus protocol solve the issue of high throughput and low latency?**
 
 Odyssey chain uses a modified Proof of Stake (PoS) consensus mechanism that emphasizes:
 
@@ -20,17 +20,17 @@ Odyssey chain uses a modified Proof of Stake (PoS) consensus mechanism that emph
   - Confidence counters: Validators adjust their decisions based on previous interactions, reducing the need for extensive sampling.
   - Quick finality: Transactions are finalized once the network forms a unified consensus, ensuring low latency and high throughput.
 
-b. What are the differences between the D-Chain, A-Chain, and O-Chain on the Odyssey chain platform?
+**b. What are the differences between the D-Chain, A-Chain, and O-Chain on the Odyssey chain platform?**
 
-  - D-Chain (Delta Chain): Supports EVM and Solidity smart contracts, enabling seamless onboarding of developers familiar with Ethereum.
-  - A-Chain (Alpha Chain): Focuses on the issuance and trading of digital assets like tokens, NFTs, and stablecoins.
-  - O-Chain (Omega Chain): Allows customization of infinets, enabling developers to define unique rules, tokenomics, and validator requirements.
+  - **D-Chain (Delta Chain):** Supports EVM and Solidity smart contracts, enabling seamless onboarding of developers familiar with Ethereum.
+  - **A-Chain (Alpha Chain):** Focuses on the issuance and trading of digital assets like tokens, NFTs, and stablecoins.
+  - **O-Chain (Omega Chain):** Allows customization of infinets, enabling developers to define unique rules, tokenomics, and validator requirements.
 
 
 ## Part 2: Hands-on with Odyssey.js
 ### Task 1: Setting Up a Node.js Backend with Odyssey.js
 
-- odyessey.js Installation
+**- odyessey.js Installation**
   
   Clone the OdysseyJS repository:
   
@@ -62,7 +62,7 @@ b. What are the differences between the D-Chain, A-Chain, and O-Chain on the Ody
   const API_BASE_URL = 'https://api.odysseyscan.com/api/v2/'; // API base URL - Infinet (D-Chain)
   ```
 
-- API GET /latest-block
+**- API GET /latest-block**
   ```javascript
   // Endpoint to get the latest block data
   app.get('/latest-block', async (req, res) => {
@@ -92,7 +92,7 @@ b. What are the differences between the D-Chain, A-Chain, and O-Chain on the Ody
   ![image](https://github.com/user-attachments/assets/03f1e0b7-1431-4fb6-8463-1ec60edbfb8b)
 
 
-- API POST /send-transaction
+**- API POST /send-transaction**
   
   Using Odyssey.js (Failed)
   ```javascript
@@ -168,7 +168,7 @@ b. What are the differences between the D-Chain, A-Chain, and O-Chain on the Ody
 
   
 ### Task 2: Interacting with the Odyssey chain Network (Infinet Simulation)
-1. backend function to Query the status of a subnet.
+**1. backend function to Query the status of a subnet.**
   ```javascript
   // Function to query subnet status
   async function querySubnetStatus(subnetId) {
@@ -225,7 +225,7 @@ b. What are the differences between the D-Chain, A-Chain, and O-Chain on the Ody
   ![image](https://github.com/user-attachments/assets/13bb2955-d752-4e99-bec1-83c9a549402e)
   ![image](https://github.com/user-attachments/assets/fd3d8900-2ba1-4d72-a48b-6347a3210547)
 
-2. Send a transaction to an address on a subnet.
+**2. Send a transaction to an address on a subnet.**
    
   
   ```javascript
@@ -259,7 +259,7 @@ b. What are the differences between the D-Chain, A-Chain, and O-Chain on the Ody
   ```
 
 
-- A backend service that uses the Odyssey chain JavaScript SDK to interact with two different Odyssey chain subnets.
+**- A backend service that uses the Odyssey chain JavaScript SDK to interact with two different Odyssey chain subnets.**
   
 In this case we can use the export/import functions !! 
  ```javascript
