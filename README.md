@@ -198,8 +198,10 @@
   ![image](https://github.com/user-attachments/assets/fd3d8900-2ba1-4d72-a48b-6347a3210547)
 
 2. Send a transaction to an address on a subnet.
-  in this case 
+   
+  
   ```javascript
+  // Function to Send a transaction to an address on a subnet
   async function sendDIONE(networkHost, networkID, senderPrivateKey, recipientAddress, amount, assetID) {
     const odyssey = new Odyssey(networkHost, 9650, "http", networkID);
     const achain = odyssey.AChain();
@@ -228,8 +230,40 @@
   }
   ```
 
+
 - A backend service that uses the Odyssey chain JavaScript SDK to interact with two different Odyssey chain subnets.
-  In this case we can use the export/import functions : D-Chain export DIONE, and A-Chain import DIONE 
+- 
+  In this case we can use the export/import functions !! 
+  ```javascript
+  // Endpoint: Transfer DIONE between subnets
+  app.post('/transfer', async (req, res) => {
+    const { fromSubnet, toSubnet, amount } = req.body;
+  
+    try {
+      const senderAddresses = achain.keyChain().getAddressStrings();
+      const recipientAddresses = dchain.keyChain().getAddressStrings();
+      const dioneAssetID = achain.getDIONEAssetID();
+  
+      const alphaUTXOResponse = await achain.getUTXOs(senderAddresses);
+      const utxoSet = alphaUTXOResponse.utxos;
+      const exportTx = await achain.buildExportTx(
+        utxoSet,
+        new BN(amount),
+        toSubnet === 'D' ? dchain.getBlockchainID() : achain.getBlockchainID(),
+        recipientAddresses,
+        senderAddresses,
+        senderAddresses
+      );
+  
+      const signedTx = exportTx.sign(aKeychain);
+      const txId = await achain.issueTx(signedTx);
+      res.json({ message: `Transaction successful! TXID: ${txId}` });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+  ```
+
 
 
 ### Task 3: Backend API for Odyssey chain Asset Transfer
