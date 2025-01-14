@@ -1,6 +1,31 @@
 # Blockchain Assessment
 
 ## Part 1: Understanding Infinets and Blockchain
+### 1. Infinets Concept
+a. What is an “infinet”? How does it relate to network topologies and scalability in decentralized systems like Odyssey chain?
+
+An infinet is a modular and customizable extension of the Odyssey chain's core architecture that enables infinite scalability by allowing the creation of independent networks tailored to specific business requirements. Infinets support a heterogeneous network topology, where different blockchains are designed for specialized functions, enhancing scalability and reducing congestion.
+
+b. How do decentralized networks (like Odyssey chain) handle the problem of infinite scalability, especially when scaling to thousands or millions of validators?
+
+Odyssey chain achieves scalability by employing a horizontal scaling approach. It uses infinets to create separate, self-contained networks that operate independently. Validators are organized at the parent network level and can participate across multiple infinets, which reduces load on individual chains. The DPoS consensus mechanism ensures that validator participation is inclusive and scalable to high numbers.
+
+### 2. Odyssey Chain Consensus & Architecture
+a. How does Odyssey chain’s consensus protocol solve the issue of high throughput and low latency?
+
+Odyssey chain uses a modified Proof of Stake (PoS) consensus mechanism that emphasizes:
+
+  - Leaderless validation: All validators have equal voting rights, reducing bottlenecks.
+  - Random sampling: Validators randomly query a fixed sample size, which enhances consensus speed.
+  - Confidence counters: Validators adjust their decisions based on previous interactions, reducing the need for extensive sampling.
+  - Quick finality: Transactions are finalized once the network forms a unified consensus, ensuring low latency and high throughput.
+
+b. What are the differences between the D-Chain, A-Chain, and O-Chain on the Odyssey chain platform?
+
+  - D-Chain (Delta Chain): Supports EVM and Solidity smart contracts, enabling seamless onboarding of developers familiar with Ethereum.
+  - A-Chain (Alpha Chain): Focuses on the issuance and trading of digital assets like tokens, NFTs, and stablecoins.
+  - O-Chain (Omega Chain): Allows customization of infinets, enabling developers to define unique rules, tokenomics, and validator requirements.
+
 
 ## Part 2: Hands-on with Odyssey.js
 ### Task 1: Setting Up a Node.js Backend with Odyssey.js
@@ -96,6 +121,9 @@
   // Get transaction status
   const status = await dchain.getTxStatus(txid);
   ```
+  - The Odyssey connection is established by creating an instance of Odyssey with the target network ID, host, and port.
+  Using the D-Chain API, we retrieve the latest block or create and issue transactions on the network.
+  
   Using Web3.js (Alternative Approach - just to get the tx hash and see it in the https://testnet.odysseyscan.com/)
   ```javascript
   // Successful implementation using Web3.js
