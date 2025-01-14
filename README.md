@@ -139,10 +139,99 @@
   ![image](https://github.com/user-attachments/assets/ae6e43f5-4e79-4e45-aa3c-2d43f8983747)
 
   
-
-
-  
 ### Task 2: Interacting with the Odyssey chain Network (Infinet Simulation)
+1. backend function to Query the status of a subnet.
+  ```javascript
+  // Function to query subnet status
+  async function querySubnetStatus(subnetId) {
+    let apiUrl = '';
+  
+    // Determine the correct URL based on the subnetId
+    switch (subnetId) {
+      case 'D':
+        apiUrl = 'https://api.odysseyscan.com/api/v2/stats';
+        break;
+      case 'A':
+        apiUrl = 'https://api.odysseyscan.com/api/v2/A/stats';
+        break;
+      case 'O':
+        apiUrl = 'https://api.odysseyscan.com/api/v2/O/stats';
+        break;
+      default:
+        throw new Error('Invalid subnet ID. Please use "D", "A", or "O" as valid subnet identifiers.');
+    }
+  
+    try {
+      const response = await axios.get(apiUrl, {
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+        },
+      });
+  
+      return response.data;
+    } catch (error) {
+      console.error(`Error querying subnet status for ${subnetId}:`, error);
+      throw new Error('Unable to fetch subnet status');
+    }
+  }
+  ```
+
+  API endpoint to get the status of a subnet
+  ```javascript
+  //API endpoint to get the status of a subnet
+  app.get('/subnet-status/:subnetId', async (req, res) => {
+    const subnetId = req.params.subnetId;
+  
+    try {
+      const status = await querySubnetStatus(subnetId);
+      res.json({
+        message: `Status of subnet ${subnetId}`,
+        data: status,
+      });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+  ```
+  ![image](https://github.com/user-attachments/assets/84671e57-428b-4c59-b44f-c92ee81a2677)
+  ![image](https://github.com/user-attachments/assets/13bb2955-d752-4e99-bec1-83c9a549402e)
+  ![image](https://github.com/user-attachments/assets/fd3d8900-2ba1-4d72-a48b-6347a3210547)
+
+2. Send a transaction to an address on a subnet.
+  in this case 
+  ```javascript
+  async function sendDIONE(networkHost, networkID, senderPrivateKey, recipientAddress, amount, assetID) {
+    const odyssey = new Odyssey(networkHost, 9650, "http", networkID);
+    const achain = odyssey.AChain();
+    
+    const keychain = achain.keyChain();
+    const senderKey = keychain.importKey(Buffer.from(senderPrivateKey, "hex"));
+    
+    const senderAddresses = keychain.getAddressStrings();
+    const utxos = (await achain.getUTXOs(senderAddresses)).utxos;
+    
+    const sendAmount = new BN(amount); // amount to send in base units
+    const unsignedTx = await achain.buildBaseTx(
+        utxos,
+        sendAmount,
+        [recipientAddress],
+        senderAddresses,    
+        senderAddresses,    
+        assetID             
+    );
+    
+    const signedTx = unsignedTx.sign(keychain);
+    const txID = await achain.issueTx(signedTx);
+    
+    console.log("Transaction sent! TX ID:", txID);
+    return txID;
+  }
+  ```
+
+- A backend service that uses the Odyssey chain JavaScript SDK to interact with two different Odyssey chain subnets.
+  In this case we can use the export/import functions : D-Chain export DIONE, and A-Chain import DIONE 
+
+
 ### Task 3: Backend API for Odyssey chain Asset Transfer
 
 
